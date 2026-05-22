@@ -1,8 +1,10 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import { Search, RefreshCcw } from 'lucide-react';
 import PostsListItem from './PostsListItem';
 import PostsContext from '../postsContext';
+import Modal from '../common/Modal';
+import NewPostForm from './NewPostForm';
 
 const styles = {
     postsListContainer: {
@@ -49,12 +51,27 @@ const Posts = () => {
   const classes = useStyles();
   const { posts, selectedPostId } = useContext(PostsContext);
 
+    const [isModalActive, setModalActive] = useState(false);
+
+    const handleModalOpen = () => {
+      setModalActive(true);
+    };
+
+    const handleModalClose = () => {
+      setModalActive(false);
+    };
+
   return (
     <div className={classes.postsListContainer}>
+      {isModalActive && (
+          <Modal title="New post form" onClose={handleModalClose}>
+            <NewPostForm />
+          </Modal>
+      )}
       <div>
         <div className={classes.postsListHeader}>
           <h2 className={classes.header}>Posts</h2>
-          <button className={classes.createPostBtn} onClick={() => console.log('New post')}>+ New Post</button>
+          <button className={classes.createPostBtn} onClick={handleModalOpen}>+ New Post</button>
         </div>
 
         <p className={classes.headerDescription}>Manage and explore your posts</p>
