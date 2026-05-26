@@ -1,36 +1,24 @@
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useState, useEffect } from 'react';
 import PostsContext from './postsContext';
 import LeftPanel from './components/LeftPanel';
 import PostsList from './components/PostsList';
 import PostDetails from './components/PostDetails';
+import { postsAPI } from './common/postsAPI';
 
 const PostsProvider = () => {
     const [selectedPostId, setSelectedPostId] = useState(null);
+    const [posts, setPosts] = useState([]);
 
     const onPostClick = (id) => {
       setSelectedPostId(id);
     };
-  
-    const { isPending, error, data } = useQuery({
-      queryKey: ['posts'],
-      queryFn: async () => {
-        const response = await fetch('/api/posts');
 
-        return response.json();
-      }
-    });
-
-    if (isPending) {
-      return 'Loading...';
-    }
-
-    if (error) {
-      return 'An error has occurred: ' + error.message;
-    }
+    useEffect(() => {
+      postsAPI.getAll().then(response => setPosts(response));
+    }, []);
 
   return (
-    <PostsContext.Provider value={{ posts: data, selectedPostId, setSelectedPostId, onPostClick }}>
+    <PostsContext.Provider value={{ posts: posts, selectedPostId, setSelectedPostId, onPostClick }}>
       <LeftPanel />
       <PostsList />
       <PostDetails />

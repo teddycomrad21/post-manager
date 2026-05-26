@@ -1,56 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createUseStyles } from 'react-jss';
-
 import Portal, { createContainer } from './Portal';
+import styles from './modal.styles'; 
 
 const MODAL_CONTAINER_ID = 'modal-container-id';
 
-const useStyles = createUseStyles({
-  wrap: {
-    background: 'rgba(255, 255, 255, 0.4)',
-    position: 'fixed',
-    width: '100%',
-    height: '100%',
-    zIndex: 5,
-    top: 0,
-    left: 0,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  content: {
-    border: '1px solid',
-    position: 'relative',
-    background: 'rgba(255, 255, 255, 1)',
-    borderRadius: '5px',
-    padding: '10px 40px 20px 20px',
-  },
-  closeButton: {
-    position: 'absolute',
-    width: '40px',
-    height: '40px',
-    padding: 0,
-    margin: 0,
-    right: 0,
-    top: 0,
-    border: 'none',
-    cursor: 'pointer',
-    background: 'none',
-    color: 'rgba(0, 0, 0, 0.6)',
-    '&:hover': {
-      color: 'rgba(0, 0, 0, 1)',
-    },
-  },
-  title: {
-    margin: '0 0 10px',
-    fontFamily: 'Noto Sans, sans-serif',
-    fontStyle: 'normal',
-    fontWeight: 800,
-    fontSize: '16px',
-    lineHeight: '20px',
-    color: 'black',
-  },
-});
+const useStyles = createUseStyles(styles);
 
 const Modal = (props) => {
   const { title, onClose, children } = props;

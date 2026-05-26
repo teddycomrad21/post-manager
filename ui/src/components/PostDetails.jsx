@@ -3,7 +3,7 @@ import { createUseStyles } from 'react-jss';
 import moment from 'moment';
 import { PersonStanding, X, Calendar, Copy, Pencil, Trash2 } from 'lucide-react';
 import PostsContext from '../postsContext';
-import { postsAPI } from './postsAPI';
+import { postsAPI } from '../common/postsAPI';
 
 const styles = {
     postDetailsContainer: {
