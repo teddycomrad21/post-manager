@@ -4,85 +4,28 @@ import moment from 'moment';
 import { PersonStanding, X, Calendar, Copy, Pencil, Trash2 } from 'lucide-react';
 import PostsContext from '../postsContext';
 import { postsAPI } from '../common/postsAPI';
-
-const styles = {
-    postDetailsContainer: {
-        border: '1px solid #dcdcdc',
-        margin: 5,
-        flexBasis: '25%',
-        padding: [0, 18, 18, 18]
-    },
-    noPosts: {
-        margin: [90, 0, 0, 90]
-    },
-    iconDataContainer: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: 5,
-        marginBottom: 12,
-        '& > h5': {
-            margin: 0
-        }
-    },
-    author: {
-        color: '#6c2de0',
-        fontWeight: 0
-    },
-    date: {
-        margin: [0, 0, 0, 5],
-        fontSize: 12,
-        color: 'grey'
-    },
-    divider: {
-        borderBottom: '1px solid #dcdcdc' 
-    },
-    closeBtn: {
-        background: 'none',
-        border: 'none',
-        padding: 0,
-        margin: 0,
-        font: 'inherit',
-        cursor: 'pointer',
-        outline: 'inherit'
-    },
-    copyId: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: 5,
-        '& > p': {
-            fontSize: 14,
-            color: 'grey',
-            margin: [3, 0, 0, 0]
-        }
-    },
-    editBtn: {
-        backgroundColor: '#6c2de0',
-        borderColor: '#6c2de0',
-        borderRadius: 5,
-        color: 'white',
-        height: 28,
-        width: '45%'
-    },
-    deleteBtn: {
-        backgroundColor: '#d42654',
-        borderColor: '#d42654',
-        borderRadius: 5,
-        color: 'white',
-        height: 28,
-        width: '45%'
-    }
-};
+import styles from './postDetails.styles';
 
 const useStyles = createUseStyles(styles);
 
 const PostDetails = () => {
     const classes = useStyles();
-    const { selectedPostId, setSelectedPostId } = useContext(PostsContext);
+    const { selectedPostId, setSelectedPostId, getAllPosts } = useContext(PostsContext);
     const [selectedPostData, setSelectedPostData] = useState(undefined);
 
     const onClose = () => {
         setSelectedPostId(null);
         setSelectedPostData(undefined);
+    };
+
+    const onDeletePost = () => {
+        if (!selectedPostId) {
+            return;
+        }
+
+        postsAPI.delete(selectedPostId)
+            .then(response => console.log(response))
+            .then(() => getAllPosts());
     };
 
     const handleCopy = async (id) => {
@@ -156,7 +99,7 @@ const PostDetails = () => {
                     <button className={classes.editBtn}>
                         <Pencil size={12} /> Edit
                     </button>
-                    <button className={classes.deleteBtn}>
+                    <button className={classes.deleteBtn} onClick={onDeletePost}>
                         <Trash2 size={12} /> Delete
                     </button>
                 </div>

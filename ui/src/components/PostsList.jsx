@@ -5,51 +5,13 @@ import PostsListItem from './PostsListItem';
 import PostsContext from '../postsContext';
 import Modal from '../common/Modal';
 import NewPostForm from './NewPostForm';
-
-const styles = {
-    postsListContainer: {
-        border: '1px solid #dcdcdc',
-        padding: 12,
-        margin: 5,
-        flexBasis: '50%',
-        textAlign: 'center'
-    },
-    postsListHeader: {
-      alignItems: 'center',
-      display: 'flex',
-      justifyContent: 'space-between'
-    },
-    header: {
-      margin: 0
-    },
-    headerDescription: {
-      margin: 0,
-      textAlign: 'left'
-    },
-    postsList: {
-      paddingTop: 25
-    },
-    searchInput: {
-      width: '100%',
-      height: 32,
-      border: '1px solid grey',
-      borderRadius: 5,
-      marginBottom: 24
-    },
-    createPostBtn: {
-      backgroundColor: '#6c2de0',
-      borderColor: '#6c2de0',
-      borderRadius: 5,
-      color: 'white',
-      height: 28
-    }
-};
+import styles from './postsList.styles';
 
 const useStyles = createUseStyles(styles);
 
 const Posts = () => {
-  const classes = useStyles();
-  const { posts, selectedPostId } = useContext(PostsContext);
+    const classes = useStyles();
+    const { posts, selectedPostId } = useContext(PostsContext);
 
     const [isModalActive, setModalActive] = useState(false);
 
@@ -65,7 +27,7 @@ const Posts = () => {
     <div className={classes.postsListContainer}>
       {isModalActive && (
           <Modal title="New post form" onClose={handleModalClose}>
-            <NewPostForm />
+            <NewPostForm setModalActive={setModalActive} />
           </Modal>
       )}
       <div>
@@ -88,7 +50,7 @@ const Posts = () => {
             className={classes.searchInput}
             onChange={() => console.log('searchInput action')}
           />
-          <RefreshCcw style={{ cursor: 'pointer' }} color="grey" size={28} onClick={() => console.log('refresh')} />
+          <RefreshCcw style={{ cursor: 'pointer' }} color="grey" size={28} onClick={() => window.location.reload()} />
         </div>
 
         {posts.map(listItem => {

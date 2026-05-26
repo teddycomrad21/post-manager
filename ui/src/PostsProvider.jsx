@@ -9,16 +9,20 @@ const PostsProvider = () => {
     const [selectedPostId, setSelectedPostId] = useState(null);
     const [posts, setPosts] = useState([]);
 
+    const getAllPosts = () => {
+        postsAPI.getAll().then(response => setPosts(response));
+    };
+
     const onPostClick = (id) => {
       setSelectedPostId(id);
     };
 
     useEffect(() => {
-      postsAPI.getAll().then(response => setPosts(response));
+      getAllPosts();
     }, []);
 
   return (
-    <PostsContext.Provider value={{ posts: posts, selectedPostId, setSelectedPostId, onPostClick }}>
+    <PostsContext.Provider value={{ posts, getAllPosts, selectedPostId, setSelectedPostId, onPostClick }}>
       <LeftPanel />
       <PostsList />
       <PostDetails />
