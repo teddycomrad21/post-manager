@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { createUseStyles } from 'react-jss';
 import PostsContext from '../postsContext';
-import { postsAPI } from '../common/postsAPI';
+import { postsAPI } from './postsAPI';
 
 const styles = {
     input: {
@@ -27,19 +27,18 @@ const styles = {
 
 const useStyles = createUseStyles(styles);
 
-const NewPostForm = ({ setModalActive }) => {
+const CreateUpdatePostForm = ({ setModalActive, isCreatePost, postToEdit }) => {
     const classes = useStyles();
     const { getAllPosts } = useContext(PostsContext);
 
     const onPostSubmit = async (formData) => {
         const data = Object.fromEntries(formData);
-        console.log(data);
+
         if (!data.author && !data.title && !data.content) {
-            console.log('No data found');
             return;
         }
 
-        await postsAPI.create(data);
+        await isCreatePost ?  postsAPI.create(data) : postsAPI.update({ ...postToEdit, ...data });
 
         await getAllPosts();
 
@@ -48,7 +47,7 @@ const NewPostForm = ({ setModalActive }) => {
 
     return (
         <div>
-            <h4>Create your new post</h4>
+            <h4>{`${isCreatePost ? 'Create your new post' : 'Edit post'}`}</h4>
             <form action={onPostSubmit}>
                 <label htmlFor="author">Author:</label>
                 <input
@@ -80,4 +79,4 @@ const NewPostForm = ({ setModalActive }) => {
     );
 };
 
-export default NewPostForm;
+export default CreateUpdatePostForm;

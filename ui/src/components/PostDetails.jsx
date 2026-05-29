@@ -4,6 +4,8 @@ import moment from 'moment';
 import { PersonStanding, X, Calendar, Copy, Pencil, Trash2 } from 'lucide-react';
 import PostsContext from '../postsContext';
 import { postsAPI } from '../common/postsAPI';
+import Modal from '../common/Modal';
+import CreateUpdatePostForm from '../common/CreateUpdatePostForm';
 import styles from './postDetails.styles';
 
 const useStyles = createUseStyles(styles);
@@ -12,10 +14,19 @@ const PostDetails = () => {
     const classes = useStyles();
     const { selectedPostId, setSelectedPostId, getAllPosts } = useContext(PostsContext);
     const [selectedPostData, setSelectedPostData] = useState(undefined);
+    const [isModalActive, setModalActive] = useState(false);
 
     const onClose = () => {
         setSelectedPostId(null);
         setSelectedPostData(undefined);
+    };
+
+    const handleEditModalOpen = () => {
+      setModalActive(true);
+    };
+
+    const handleModalClose = () => {
+      setModalActive(false);
     };
 
     const onDeletePost = () => {
@@ -59,6 +70,13 @@ const PostDetails = () => {
                     <h4>Post details</h4>
                     <button className={classes.closeBtn} onClick={onClose}>{<X size={22} />}</button>
                 </div>
+
+                {isModalActive && (
+                    <Modal title="Edit post form" onClose={handleModalClose}>
+                        <CreateUpdatePostForm setModalActive={setModalActive} postToEdit={selectedPostData} />
+                    </Modal>
+                )}
+
                 {selectedPostData.picture ? (
                     <img
                         src={`http://localhost:3000/${selectedPostData.picture}`}
@@ -96,7 +114,7 @@ const PostDetails = () => {
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 12 }}>
-                    <button className={classes.editBtn}>
+                    <button className={classes.editBtn} onClick={handleEditModalOpen}>
                         <Pencil size={12} /> Edit
                     </button>
                     <button className={classes.deleteBtn} onClick={onDeletePost}>

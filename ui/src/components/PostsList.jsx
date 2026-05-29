@@ -4,7 +4,7 @@ import { Search, RefreshCcw } from 'lucide-react';
 import PostsListItem from './PostsListItem';
 import PostsContext from '../postsContext';
 import Modal from '../common/Modal';
-import NewPostForm from './NewPostForm';
+import CreateUpdatePostForm from '../common/CreateUpdatePostForm';
 import styles from './postsList.styles';
 
 const useStyles = createUseStyles(styles);
@@ -27,7 +27,7 @@ const Posts = () => {
     <div className={classes.postsListContainer}>
       {isModalActive && (
           <Modal title="New post form" onClose={handleModalClose}>
-            <NewPostForm setModalActive={setModalActive} />
+            <CreateUpdatePostForm setModalActive={setModalActive} isCreatePost />
           </Modal>
       )}
       <div>
